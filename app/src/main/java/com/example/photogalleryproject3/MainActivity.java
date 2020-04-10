@@ -746,22 +746,24 @@ public class MainActivity extends AppCompatActivity
     // ------------------------QR scanning, the function when the button is pressed ----------- IL
     public void DetectQR(View view)
     {
-        Barcode detectedQR = QRDetection(mCurrentPhotoPath);  // calling the QR detecting function ---- IL
+        SparseArray<Barcode> detectedQRs = QRDetection(mCurrentPhotoPath);  // calling the QR detecting function ---- IL
         TextView textViewQRcontent = (TextView) findViewById(R.id.QR_context);
 
-        if (detectedQR == null) {
-            //textViewQRcontent.setText(thisCode.rawValue);
+        // assuming the maximum number of QR code in a picture is 1 ---------- IL
+        Barcode thisCode = detectedQRs.valueAt(0);
+
+        if (thisCode == null) {
             textViewQRcontent.setText("There is no QR in this image");
         }
         else {
-            textViewQRcontent.setText("QR content: " + detectedQR.rawValue);
+            textViewQRcontent.setText("QR content: " + thisCode.rawValue);
         }
 
     }
 
 
     // -------------------------------------------QR scannning------------------------------IL
-     public Barcode QRDetection(String imagePath) {
+     public SparseArray<Barcode> QRDetection(String imagePath) {
         // check if google play service is ready to process barcodes
         BarcodeDetector detector =
                 new BarcodeDetector.Builder(getApplicationContext())
@@ -781,9 +783,7 @@ public class MainActivity extends AppCompatActivity
         Frame frame = new Frame.Builder().setBitmap(bitmap).build();
         SparseArray<Barcode> barcodes = detector.detect(frame);
 
-        Barcode thisCode = barcodes.valueAt(0);
-
-        return thisCode;
+        return barcodes;
     }
 
 
