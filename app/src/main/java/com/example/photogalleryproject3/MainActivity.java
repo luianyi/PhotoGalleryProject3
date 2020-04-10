@@ -744,34 +744,40 @@ public class MainActivity extends AppCompatActivity
 
 
     // ------------------------QR scanning, the function when the button is pressed ----------- IL
-    public void DetectQR(View view)
-    {
+    public void DetectQR(View view) {
+
         SparseArray<Barcode> detectedQRs = QRDetection(mCurrentPhotoPath);  // calling the QR detecting function ---- IL
         TextView textViewQRcontent = (TextView) findViewById(R.id.QR_context);
 
-        // assuming the maximum number of QR code in a picture is 1 ---------- IL
-        Barcode thisCode = detectedQRs.valueAt(0);
-
-        if (thisCode == null) {
+        int size_ofDetecedQR = detectedQRs.size();
+//       //}
+        if (size_ofDetecedQR == 0) {
             textViewQRcontent.setText("There is no QR in this image");
+            Toast.makeText(this, "There is no QR in this image", Toast.LENGTH_SHORT).show();
         }
         else {
+            Barcode thisCode = detectedQRs.valueAt(0);
+            Toast.makeText(this, "There is QR", Toast.LENGTH_SHORT).show();
             textViewQRcontent.setText("QR content: " + thisCode.rawValue);
         }
-
     }
+
 
 
     // -------------------------------------------QR scannning------------------------------IL
      public SparseArray<Barcode> QRDetection(String imagePath) {
-        // check if google play service is ready to process barcodes
-        BarcodeDetector detector =
-                new BarcodeDetector.Builder(getApplicationContext())
-                        .setBarcodeFormats(Barcode.DATA_MATRIX | Barcode.QR_CODE)
-                        .build();
-        TextView textViewQRcontent = (TextView) findViewById(R.id.QR_context);
+
+
+            // check if google play service is ready to process barcodes
+            BarcodeDetector detector =
+                    new BarcodeDetector.Builder(getApplicationContext())
+                            .setBarcodeFormats(Barcode.DATA_MATRIX | Barcode.QR_CODE)
+                            .build();
+            TextView textViewQRcontent = (TextView) findViewById(R.id.QR_context);
+
         if(!detector.isOperational()){
-            textViewQRcontent.setText("Could not set up the detector!");
+           // textViewQRcontent.setText("Could not set up the detector!");
+            Toast.makeText(this, "Could not set up the detector! ", Toast.LENGTH_SHORT).show();
             //return;
         }
 
