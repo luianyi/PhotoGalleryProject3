@@ -743,14 +743,14 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    // ------------------------QR scanning, the function when the button is pressed ----------- IL
+    // ------------------------QR scanning, this function runs when the button is pressed ----------- IL
     public void DetectQR(View view) {
 
         SparseArray<Barcode> detectedQRs = QRDetection(mCurrentPhotoPath);  // calling the QR detecting function ---- IL
         TextView textViewQRcontent = (TextView) findViewById(R.id.QR_context);
 
         int size_ofDetecedQR = detectedQRs.size();
-//       //}
+
         if (size_ofDetecedQR == 0) {
             textViewQRcontent.setText("There is no QR in this image");
             Toast.makeText(this, "There is no QR in this image", Toast.LENGTH_SHORT).show();
@@ -782,8 +782,9 @@ public class MainActivity extends AppCompatActivity
         }
 
         // load image file to bitmap
-        BitmapFactory.Options bitmapFatoryOptions = new BitmapFactory.Options();
-        bitmapFatoryOptions.inPreferredConfig = Bitmap.Config.RGB_565;
+        //  BitmapFactory.Options bitmapFatoryOptions = new BitmapFactory.Options();
+        //  bitmapFatoryOptions.inPreferredConfig = Bitmap.Config.RGB_565;
+
         Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
 
         Frame frame = new Frame.Builder().setBitmap(bitmap).build();
